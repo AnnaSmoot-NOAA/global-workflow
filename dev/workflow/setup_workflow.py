@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Entry point for setting up Rocoto XML for all applications in global-workflow
+Entry point for setting up workflow (Rocoto XML or EcFlow) for all applications in global-workflow
 """
 
 import os
@@ -19,12 +19,12 @@ logger = getLogger(__name__)
 # @logit(logger)
 def input_args(*argv):
     """
-    Method to collect user arguments for `setup_xml.py`
+    Method to collect user arguments for `setup_workflow.py`
     """
 
     description = """
         Sources configuration files based on application and
-        creates "$PSLOT.xml" for use with Rocoto.
+        creates workflow files for use with Rocoto or EcFlow.
         """
 
     parser = ArgumentParser(description=description,
@@ -34,6 +34,8 @@ def input_args(*argv):
     parser.add_argument('expdir', help='full path to experiment directory containing config files',
                         type=str, default=os.environ['PWD'])
 
+    parser.add_argument('--workflow', help='workflow engine to use', type=str,
+                        choices=['rocoto', 'ecflow'], default='rocoto', required=False)
     parser.add_argument('--maxtries', help='maximum number of retries', type=int,
                         default=2, required=False)
     parser.add_argument('--cyclethrottle', help='maximum number of concurrent cycles', type=int,
@@ -82,10 +84,19 @@ def check_dir_writable(dir_path):
             return False
 
 
-@logit(logger, name="setup_xml.main")
+@logit(logger, name="setup_workflow.main")
 def main(*argv):
 
     user_inputs = input_args(argv)
+    
+    # Handle workflow engine selection
+    if user_inputs.workflow == 'ecflow':
+        logger.info("EcFlow workflow engine selected")
+        logger.error("EcFlow workflow is not yet implemented. Please use Rocoto for now.")
+        raise NotImplementedError("EcFlow workflow is not yet implemented")
+    
+    logger.info("Rocoto workflow engine selected")
+    
     rocoto_param_dict = {'maxtries': user_inputs.maxtries,
                          'cyclethrottle': user_inputs.cyclethrottle,
                          'taskthrottle': user_inputs.taskthrottle,

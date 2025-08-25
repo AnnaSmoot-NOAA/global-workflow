@@ -3,7 +3,7 @@ experiment:
   mode: forecast-only
 
 workflow:
-  engine: rocoto
+  engine: ecflow
 
 arguments:
   pslot: {{ 'pslot' | getenv }}

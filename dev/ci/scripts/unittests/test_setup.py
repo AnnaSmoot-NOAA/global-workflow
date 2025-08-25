@@ -58,12 +58,12 @@ def test_setup_expt():
             os.environ.pop('HPC_ACCOUNT', None)
 
 
-def test_setup_xml():
+def test_setup_workflow():
 
-    setup_xml_script = Executable(os.path.join(HOMEgfs, "dev/workflow/setup_xml.py"))
-    setup_xml_script.add_default_arg(f"{RUNDIR}/{pslot}")
-    setup_xml_script()
-    assert (setup_xml_script.returncode == 0)
+    setup_workflow_script = Executable(os.path.join(HOMEgfs, "dev/workflow/setup_workflow.py"))
+    setup_workflow_script.add_default_arg(f"{RUNDIR}/{pslot}")
+    setup_workflow_script()
+    assert (setup_workflow_script.returncode == 0)
 
     # Get the account value from the config file
     cfg = Configuration(f"{RUNDIR}/{pslot}")
@@ -77,22 +77,22 @@ def test_setup_xml():
     rmtree(RUNDIR)
 
 
-def test_setup_xml_fail_config_env_cornercase():
+def test_setup_workflow_fail_config_env_cornercase():
 
     script_content = ('''#!/usr/bin/env bash
 export HOMEgfs=foobar
-../../../workflow/setup_xml.py "${1}"\n
+../../../workflow/setup_workflow.py "${1}"\n
 ''')
 
-    with open('run_setup_xml.sh', 'w') as file:
+    with open('run_setup_workflow.sh', 'w') as file:
         file.write(script_content)
-    os.chmod('run_setup_xml.sh', 0o755)
+    os.chmod('run_setup_workflow.sh', 0o755)
 
     try:
-        setup_xml_script = Executable(os.path.join(HOMEgfs, "dev/ci/scripts/tests/run_setup_xml.sh"))
-        setup_xml_script.add_default_arg(f"{RUNDIR}/{pslot}")
-        setup_xml_script()
-        assert (setup_xml_script.returncode == 0)
+        setup_workflow_script = Executable(os.path.join(HOMEgfs, "dev/ci/scripts/tests/run_setup_workflow.sh"))
+        setup_workflow_script.add_default_arg(f"{RUNDIR}/{pslot}")
+        setup_workflow_script()
+        assert (setup_workflow_script.returncode == 0)
 
         cfg = Configuration(f"{RUNDIR}/{pslot}")
         base = cfg.parse_config('config.base')
@@ -114,7 +114,7 @@ export HOMEgfs=foobar
 
     finally:
         # Cleanup code to ensure it runs regardless of test outcome
-        os.remove('run_setup_xml.sh')
+        os.remove('run_setup_workflow.sh')
         try:
             rmtree(RUNDIR)
         except FileNotFoundError:
