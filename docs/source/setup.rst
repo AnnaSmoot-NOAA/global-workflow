@@ -152,15 +152,15 @@ This step sets up the files needed by the Workflow Manager/Driver. At this momen
 
 ::
 
-   ./setup_xml.py $EXPDIR/$PSLOT
+   ./setup_workflow.py $EXPDIR/$PSLOT
 
 Example:
 
 ::
 
-   ./setup_xml.py /some_safe_disk_area/Joe.Schmo/expdir/test
+   ./setup_workflow.py /some_safe_disk_area/Joe.Schmo/expdir/test
 
-Additional options for setting up Rocoto are available with `setup_xml.py -h` that allow users to change the number of failed tries, number of concurrent cycles and tasks as well as Rocoto's verbosity levels.
+Additional options for setting up Rocoto are available with `setup_workflow.py -h` that allow users to change the number of failed tries, number of concurrent cycles and tasks as well as Rocoto's verbosity levels.
 
 ****************************************
 Step 5: Confirm files from setup scripts
