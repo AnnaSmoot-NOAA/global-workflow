@@ -41,7 +41,7 @@ def input_args(*argv):
                                        help='workflow engine to use')
 
     # Rocoto subparser
-    rocoto_parser = subparsers.add_parser('rocoto', 
+    rocoto_parser = subparsers.add_parser('rocoto',
                                           help='Use Rocoto workflow engine',
                                           formatter_class=ArgumentDefaultsHelpFormatter)
     rocoto_parser.add_argument('--maxtries', help='maximum number of retries', type=int,
@@ -108,7 +108,7 @@ def main(*argv):
         raise NotImplementedError("EcFlow workflow is not yet implemented")
 
     logger.info("Rocoto workflow engine selected")
- 
+
     # Build rocoto parameter dictionary - only available when rocoto is selected
     rocoto_param_dict = {}
     if user_inputs.workflow == 'rocoto':
