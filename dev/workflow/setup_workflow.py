@@ -32,7 +32,7 @@ def input_args(*argv):
 
     # Common arguments across all modes
     parser.add_argument('expdir', help='full path to experiment directory containing config files',
-                        type=str)
+                        type=str, default=os.environ['PWD'])
     parser.add_argument('--force', help='raise warnings instead of errors when possible',
                         action='store_true', dest="force")
 
@@ -100,15 +100,15 @@ def check_dir_writable(dir_path):
 def main(*argv):
 
     user_inputs = input_args(argv)
-    
+
     # Handle workflow engine selection
     if user_inputs.workflow == 'ecflow':
         logger.info("EcFlow workflow engine selected")
         logger.error("EcFlow workflow is not yet implemented. Please use Rocoto for now.")
         raise NotImplementedError("EcFlow workflow is not yet implemented")
-    
+
     logger.info("Rocoto workflow engine selected")
-    
+ 
     # Build rocoto parameter dictionary - only available when rocoto is selected
     rocoto_param_dict = {}
     if user_inputs.workflow == 'rocoto':

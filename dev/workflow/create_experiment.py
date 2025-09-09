@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
     # Create a list of arguments to setup_expt.py
     setup_expt_args = [testconf.experiment.net, testconf.experiment.mode]
-    
+
     # Process experiment arguments (now in experiment section, excluding net and mode)
     experiment_args = {k: v for k, v in testconf.experiment.items() if k not in ['net', 'mode']}
     for kk, vv in experiment_args.items():
@@ -115,9 +115,9 @@ if __name__ == '__main__':
     workflow_engine = 'rocoto'  # default
     if hasattr(testconf, 'workflow') and hasattr(testconf.workflow, 'engine'):
         workflow_engine = testconf.workflow.engine
-    
+
     setup_workflow_args.append(workflow_engine)
-    
+
     # Add rocoto-specific parameters if workflow engine is rocoto and they are specified
     if workflow_engine == 'rocoto' and hasattr(testconf, 'workflow') and hasattr(testconf.workflow, 'rocoto'):
         rocoto_config = testconf.workflow.rocoto

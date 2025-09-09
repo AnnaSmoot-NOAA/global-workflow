@@ -19,7 +19,7 @@ Experiment Setup
 Scripts that will be used:
 
    * ``dev/workflow/setup_expt.py``
-   * ``dev/workflow/setup_xml.py``
+   * ``dev/workflow/setup_workflow.py``
 
 ****************************************
 Step 1: Set user settings
