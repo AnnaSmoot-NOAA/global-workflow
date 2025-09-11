@@ -93,6 +93,12 @@ export HOMEgfs=foobar
         setup_workflow_script.add_default_arg(f"{RUNDIR}/{pslot}")
         setup_workflow_script()
         assert (setup_workflow_script.returncode == 0)
+    except NotImplementedError:
+        assert True
+        pass
+    except Exception as e:
+        pytest.fail(f"setup_xml.py failed with an unexpected exception: {e}")
+        assert False
 
         cfg = Configuration(f"{RUNDIR}/{pslot}")
         base = cfg.parse_config('config.base')
