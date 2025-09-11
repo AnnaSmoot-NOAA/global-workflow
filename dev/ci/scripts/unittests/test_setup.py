@@ -93,12 +93,6 @@ export HOMEgfs=foobar
         setup_workflow_script.add_default_arg(f"{RUNDIR}/{pslot}")
         setup_workflow_script()
         assert (setup_workflow_script.returncode == 0)
-    except NotImplementedError:
-        assert True
-        pass
-    except Exception as e:
-        pytest.fail(f"setup_xml.py failed with an unexpected exception: {e}")
-        assert False
 
         cfg = Configuration(f"{RUNDIR}/{pslot}")
         base = cfg.parse_config('config.base')
@@ -110,6 +104,13 @@ export HOMEgfs=foobar
         with open(f"{RUNDIR}/{pslot}/{pslot}.xml", 'r') as file:
             contents = file.read()
         assert contents.count(account_value) > 5
+
+    except NotImplementedError:
+        assert True
+        pass
+    except Exception as e:
+        pytest.fail(f"setup_xml.py failed with an unexpected exception: {e}")
+        assert False
 
     except ProcessError as e:
         # We expect this fail becuse ACCOUNT=fv3-cpu in config.base and environment
