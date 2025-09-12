@@ -78,19 +78,19 @@ def test_setup_workflow():
     rmtree(RUNDIR)
 
 
-def test_setup_workflow_fail_config_env_cornercase():
+def test_setup_workflow_fail_config_env_cornercase(tmp_path):
 
     script_content = ('''#!/usr/bin/env bash
 export HOMEgfs=foobar
 ../../../workflow/setup_workflow.py "${1}" "${2}"\n
 ''')
-
-    with open('run_setup_workflow.sh', 'w') as file:
+    tmp_file = tmp_path / "run_setup_workflow.sh"
+    with open(tmp_file, 'w') as file:
         file.write(script_content)
-    os.chmod('run_setup_workflow.sh', 0o755)
+    os.chmod(tmp_file, 0o755)
 
     try:
-        setup_workflow_script = Executable(os.path.join(HOMEgfs, "dev/ci/scripts/tests/run_setup_workflow.sh"))
+        setup_workflow_script = Executable(tmp_file)
         setup_workflow_script.add_default_arg(f"{RUNDIR}/{pslot}")
         setup_workflow_script.add_default_arg("rocoto")
         setup_workflow_script()
@@ -123,7 +123,7 @@ export HOMEgfs=foobar
 
     finally:
         # Cleanup code to ensure it runs regardless of test outcome
-        os.remove('run_setup_workflow.sh')
+        os.remove(tmp_file)
         try:
             rmtree(RUNDIR)
         except FileNotFoundError:
