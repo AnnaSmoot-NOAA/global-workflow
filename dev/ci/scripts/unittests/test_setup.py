@@ -74,6 +74,8 @@ def test_setup_workflow():
         contents = file.read()
     assert contents.count(account_value) > 5
 
+    rmtree(RUNDIR)  # TODO: should this be cleaned here or at end of all tests?
+
 
 def test_setup_workflow_fail_config_env_cornercase(tmp_path):
 
@@ -86,7 +88,28 @@ def test_setup_workflow_fail_config_env_cornercase(tmp_path):
         setup_workflow_script(*cmd_args, env=env)
         assert (setup_workflow_script.returncode == 0)
 
+        cfg = Configuration(f"{RUNDIR}/{pslot}")
+        base = cfg.parse_config('config.base')
+        # Get the account value from the config
+        account_value = base.ACCOUNT
+
+        assert "UNKNOWN" not in base.values()
+
+        with open(f"{RUNDIR}/{pslot}/{pslot}.xml", 'r') as file:
+            contents = file.read()
+        assert contents.count(account_value) > 5
+
+    except ProcessError as e:
+        # We expect this fail becuse ACCOUNT=fv3-cpu in config.base and environment
+        pass
+
     except Exception as e:
         # If an exception occurs, pass the test with a custom message
         pytest.fail(f"Expected exception occurred: {e}")
 
+    finally:
+        # Cleanup code to ensure it runs regardless of test outcome
+        try:
+            rmtree(RUNDIR)
+        except FileNotFoundError:
+            pass
