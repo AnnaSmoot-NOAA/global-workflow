@@ -158,7 +158,7 @@ Example:
 
 ::
 
-   ./setup_workflow.py /some_safe_disk_area/Joe.Schmo/expdir/test
+   ./setup_workflow.py /some_safe_disk_area/Joe.Schmo/expdir/test rocoto
 
 Additional options for setting up Rocoto are available with `setup_workflow.py -h` that allow users to change the number of failed tries, number of concurrent cycles and tasks as well as Rocoto's verbosity levels.
 
