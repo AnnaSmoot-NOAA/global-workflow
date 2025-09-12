@@ -82,7 +82,7 @@ def test_setup_workflow_fail_config_env_cornercase():
 
     script_content = ('''#!/usr/bin/env bash
 export HOMEgfs=foobar
-../../../workflow/setup_workflow.py "${1}"\n
+../../../workflow/setup_workflow.py "${1}" "${2}"\n
 ''')
 
     with open('run_setup_workflow.sh', 'w') as file:
