@@ -74,28 +74,10 @@ def test_setup_workflow():
         contents = file.read()
     assert contents.count(account_value) > 5
 
-    rmtree(RUNDIR)
+    rmtree(RUNDIR)  # TODO: should this be cleaned here or at end of all tests?
 
 
 def test_setup_workflow_fail_config_env_cornercase(tmp_path):
-
-    script_content = ('''#!/usr/bin/env bash
-export HOMEgfs=foobar
-../../../workflow/setup_workflow.py "${1}" "${2}"\n
-''')
-    tmp_file = tmp_path / "run_setup_workflow.sh"
-    with open(tmp_file, 'w') as file:
-        file.write(script_content)
-        # file.write("#!/bin/env bash")
-        # file.write("set -x")
-        # file.write("export HOMEgfs=foobar")
-        # file.write("EXPDIR=${1}")
-        # file.write("ENGINE=${2}")
-        # file.write("echo ${EXPDIR} ${ENGINE}")
-        # file.write("ls -l ${EXPDIR}")
-        # file.write("ls -l ${EXPDIR}/../")
-        # file.write(f"{HOMEgfs}/dev/workflow/setup_workflow.py ${{EXPDIR}} ${{ENGINE}}")
-    os.chmod(tmp_file, 0o755)
 
     setup_workflow_script = Executable(os.path.join(HOMEgfs, "dev/workflow/setup_workflow.py"))
     cmd_args = [f"{RUNDIR}/{pslot}", "rocoto"]
@@ -117,23 +99,16 @@ export HOMEgfs=foobar
             contents = file.read()
         assert contents.count(account_value) > 5
 
-    except NotImplementedError:
-        assert True
-        pass
-    except Exception as e:
-        pytest.fail(f"setup_workflow.py failed with an unexpected exception: {e}")
-        assert False
-
     except ProcessError as e:
         # We expect this fail becuse ACCOUNT=fv3-cpu in config.base and environment
         pass
+
     except Exception as e:
         # If an exception occurs, pass the test with a custom message
         pytest.fail(f"Expected exception occurred: {e}")
 
     finally:
         # Cleanup code to ensure it runs regardless of test outcome
-        # os.remove(tmp_file)
         try:
             rmtree(RUNDIR)
         except FileNotFoundError:
