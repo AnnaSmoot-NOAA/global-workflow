@@ -62,6 +62,7 @@ def test_setup_workflow():
 
     setup_workflow_script = Executable(os.path.join(HOMEgfs, "dev/workflow/setup_workflow.py"))
     setup_workflow_script.add_default_arg(f"{RUNDIR}/{pslot}")
+    setup_workflow_script.add_default_arg("rocoto")
     setup_workflow_script()
     assert (setup_workflow_script.returncode == 0)
 
@@ -91,6 +92,7 @@ export HOMEgfs=foobar
     try:
         setup_workflow_script = Executable(os.path.join(HOMEgfs, "dev/ci/scripts/tests/run_setup_workflow.sh"))
         setup_workflow_script.add_default_arg(f"{RUNDIR}/{pslot}")
+        setup_workflow_script.add_default_arg("rocoto")
         setup_workflow_script()
         assert (setup_workflow_script.returncode == 0)
 
@@ -109,7 +111,7 @@ export HOMEgfs=foobar
         assert True
         pass
     except Exception as e:
-        pytest.fail(f"setup_xml.py failed with an unexpected exception: {e}")
+        pytest.fail(f"setup_workflow.py failed with an unexpected exception: {e}")
         assert False
 
     except ProcessError as e:
