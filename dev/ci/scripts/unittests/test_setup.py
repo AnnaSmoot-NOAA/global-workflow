@@ -61,9 +61,8 @@ def test_setup_expt():
 def test_setup_workflow():
 
     setup_workflow_script = Executable(os.path.join(HOMEgfs, "dev/workflow/setup_workflow.py"))
-    setup_workflow_script.add_default_arg(f"{RUNDIR}/{pslot}")
-    setup_workflow_script.add_default_arg("rocoto")
-    setup_workflow_script()
+    cmd_args = [f"{RUNDIR}/{pslot}", "rocoto"]
+    setup_workflow_script(*cmd_args)
     assert (setup_workflow_script.returncode == 0)
 
     # Get the account value from the config file
@@ -86,23 +85,25 @@ export HOMEgfs=foobar
 ''')
     tmp_file = tmp_path / "run_setup_workflow.sh"
     with open(tmp_file, 'w') as file:
-        #file.write(script_content)
-        file.write("#!/bin/env bash")
-        file.write("set -x")
-        file.write("export HOMEgfs=foobar")
-        file.write("EXPDIR=${1}")
-        file.write("ENGINE=${2}")
-        file.write("echo ${EXPDIR} ${ENGINE}")
-        file.write("ls -l ${EXPDIR}")
-        file.write("ls -l ${EXPDIR}/../")
-        file.write(f"{HOMEgfs}/dev/workflow/setup_workflow.py ${{EXPDIR}} ${{ENGINE}}")
+        file.write(script_content)
+        # file.write("#!/bin/env bash")
+        # file.write("set -x")
+        # file.write("export HOMEgfs=foobar")
+        # file.write("EXPDIR=${1}")
+        # file.write("ENGINE=${2}")
+        # file.write("echo ${EXPDIR} ${ENGINE}")
+        # file.write("ls -l ${EXPDIR}")
+        # file.write("ls -l ${EXPDIR}/../")
+        # file.write(f"{HOMEgfs}/dev/workflow/setup_workflow.py ${{EXPDIR}} ${{ENGINE}}")
     os.chmod(tmp_file, 0o755)
 
+    setup_workflow_script = Executable(os.path.join(HOMEgfs, "dev/workflow/setup_workflow.py"))
+    cmd_args = [f"{RUNDIR}/{pslot}", "rocoto"]
+    env = os.environ.copy()
+    env['HOMEgfs'] = 'foobar'  # Intentionally incorrect to trigger failure
+
     try:
-        setup_workflow_script = Executable(tmp_file)
-        setup_workflow_script.add_default_arg(f"{RUNDIR}/{pslot}")
-        setup_workflow_script.add_default_arg("rocoto")
-        setup_workflow_script()
+        setup_workflow_script(*cmd_args, env=env)
         assert (setup_workflow_script.returncode == 0)
 
         cfg = Configuration(f"{RUNDIR}/{pslot}")
@@ -132,7 +133,7 @@ export HOMEgfs=foobar
 
     finally:
         # Cleanup code to ensure it runs regardless of test outcome
-        os.remove(tmp_file)
+        # os.remove(tmp_file)
         try:
             rmtree(RUNDIR)
         except FileNotFoundError:
