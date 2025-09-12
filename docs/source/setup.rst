@@ -160,7 +160,9 @@ Example:
 
    ./setup_workflow.py /some_safe_disk_area/Joe.Schmo/expdir/test rocoto
 
-Additional options for setting up Rocoto are available with `setup_workflow.py -h` that allow users to change the number of failed tries, number of concurrent cycles and tasks as well as Rocoto's verbosity levels.
+Additional options for setting up Rocoto or ecFlow are available with `setup_workflow.py -h` that allow users to change the number of failed tries, number of concurrent cycles and tasks as well as verbosity levels.
+
+Presently, only the Rocoto workflow engine is supported.  EcFlow capabilities are a work in progress.
 
 ****************************************
 Step 5: Confirm files from setup scripts
