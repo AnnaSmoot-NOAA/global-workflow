@@ -86,7 +86,16 @@ export HOMEgfs=foobar
 ''')
     tmp_file = tmp_path / "run_setup_workflow.sh"
     with open(tmp_file, 'w') as file:
-        file.write(script_content)
+        #file.write(script_content)
+        file.write("#!/bin/env bash")
+        file.write("set -x")
+        file.write("export HOMEgfs=foobar")
+        file.write("EXPDIR=${1}")
+        file.write("ENGINE=${2}")
+        file.write("echo ${EXPDIR} ${ENGINE}")
+        file.write("ls -l ${EXPDIR}")
+        file.write("ls -l ${EXPDIR}/../")
+        file.write(f"{HOMEgfs}/dev/workflow/setup_workflow.py ${{EXPDIR}} ${{ENGINE}}")
     os.chmod(tmp_file, 0o755)
 
     try:
