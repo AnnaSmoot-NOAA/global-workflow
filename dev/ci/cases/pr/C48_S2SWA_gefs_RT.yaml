@@ -24,6 +24,7 @@ skip_ci_on_hosts:
   - hercules
   - wcoss2
   - hera
+  - ursa
   - orion
   - awsepicglobalworkflow
 
