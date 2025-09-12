@@ -152,7 +152,7 @@ This step sets up the files needed by the Workflow Manager/Driver. At this momen
 
 ::
 
-   ./setup_workflow.py $EXPDIR/$PSLOT
+   ./setup_workflow.py $EXPDIR/$PSLOT rocoto|ecflow
 
 Example:
 
