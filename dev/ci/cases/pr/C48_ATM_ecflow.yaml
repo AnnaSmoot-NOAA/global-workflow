@@ -21,7 +21,7 @@ skip_ci_on_hosts:
   - wcoss2
 
 workflow:
-  engine: ecflow
+  engine: rocoto  # TODO: change to ecflow soon
   rocoto:
     maxtries: 2
     cyclethrottle: 3
